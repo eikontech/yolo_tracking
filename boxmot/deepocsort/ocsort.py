@@ -7,7 +7,7 @@ import torch
 import numpy as np
 from .association import *
 from .cmc import CMCComputer
-from boxmot.deep.reid_multibackend import ReIDDetectMultiBackend
+from ..deep.reid_multibackend import ReIDDetectMultiBackend
 
 
 
@@ -320,7 +320,7 @@ class OCSort(object):
         model_weights,
         device,
         fp16,
-        det_thresh=0.3,
+        det_thresh,
         max_age=30,
         min_hits=3,
         iou_threshold=0.3,
@@ -372,11 +372,11 @@ class OCSort(object):
         scores = dets[:, 4]
         clss = dets[:, 5]
         
-        classes = clss
-        xyxys = xyxys
-        scores = scores
+        classes = clss.numpy()
+        xyxys = xyxys.numpy()
+        scores = scores.numpy()
         
-        dets = dets[:, 0:6]
+        dets = dets[:, 0:6].numpy()
         remain_inds = scores > self.det_thresh
         dets = dets[remain_inds]
         self.height, self.width = img_numpy.shape[:2]

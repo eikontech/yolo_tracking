@@ -9,8 +9,10 @@ from .basetrack import BaseTrack, TrackState
 from .kalman_filter import KalmanFilter
 import torch
 
-from boxmot.deep.reid_multibackend import ReIDDetectMultiBackend
-from boxmot.utils.ops import xyxy2xywh, xywh2xyxy
+# from fast_reid.fast_reid_interfece import FastReIDInterface
+
+from ..deep.reid_multibackend import ReIDDetectMultiBackend
+from ultralytics.yolo.utils.ops import xyxy2xywh, xywh2xyxy
 
 
 class STrack(BaseTrack):
@@ -275,13 +277,13 @@ class BoTSORT(object):
         removed_stracks = []
         
         xyxys = output_results[:, 0:4]
-        xywh = xyxy2xywh(xyxys)
+        xywh = xyxy2xywh(xyxys.numpy())
         confs = output_results[:, 4]
         clss = output_results[:, 5]
         
-        classes = clss
-        xyxys = xyxys
-        confs = confs
+        classes = clss.numpy()
+        xyxys = xyxys.numpy()
+        confs = confs.numpy()
 
         remain_inds = confs > self.track_high_thresh
         inds_low = confs > 0.1

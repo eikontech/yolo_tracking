@@ -10,9 +10,9 @@ from .sort.nn_matching import NearestNeighborDistanceMetric
 from .sort.detection import Detection
 from .sort.tracker import Tracker
 
-from boxmot.deep.reid_multibackend import ReIDDetectMultiBackend
+from ..deep.reid_multibackend import ReIDDetectMultiBackend
 
-from boxmot.utils.ops import xyxy2xywh
+from ultralytics.yolo.utils.ops import xyxy2xywh
 
 
 class StrongSORT(object):
@@ -44,9 +44,9 @@ class StrongSORT(object):
         confs = dets[:, 4]
         clss = dets[:, 5]
         
-        classes = clss
-        xywhs = xyxy2xywh(xyxys)
-        confs = confs
+        classes = clss.numpy()
+        xywhs = xyxy2xywh(xyxys.numpy())
+        confs = confs.numpy()
         self.height, self.width = ori_img.shape[:2]
         
         # generate detections
